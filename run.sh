@@ -35,8 +35,6 @@ fi
 
 user="aircrack-ng"
 repo="rtl8188eus"
-user="TheArqsz"
-repo="test_repository_32187"
 echo "Collecting important files from: $user/$repo"
 git clone https://github.com/$user/$repo $tmp_dir
 

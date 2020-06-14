@@ -49,6 +49,18 @@ echo "blacklist r8188eu.ko" > /etc/modprobe.d/realtek.conf
 make && make install
 modprobe 8188eu
 
+echo "Removing tmp directory"
+rm -r $tmp_dir
+
+if [ ! -d "/sys/class/net/$1" ]; then
+	echo "Reconnect your device to USB"
+	echo "and execute following commands:"
+	echo "	ifconfig $1 down"
+	echo "	iwconfig $1 mode monitor"
+	echo "	ifconfig $1 up"
+	exit
+fi
+
 echo "Setting up monitor mode"
 ifconfig $1 down
 status=$(iwconfig $1 mode monitor)
@@ -56,12 +68,3 @@ if [[ ! "$status" == "" ]]; then
 	echo "Error: cannot set up monitor mode for $1"
 fi
 ifconfig $1 up
-
-echo "Removing tmp directory"
-rm -r $tmp_dir
-
-echo "If device disconnected from system:"
-echo "reconnect it to usb and:"
-echo "	ifconfig $1 down"
-echo "	iwconfig $1 mode monitor"
-echo "	ifconfig $1 up"

@@ -52,7 +52,18 @@ modprobe 8188eu
 echo "Removing tmp directory"
 rm -r $tmp_dir
 
+read -p "Do you want to turn monitor mode on now? (y/N) " checkMonitor
+
+if [[ "$checkMonitor" =~ ^(Y|y)$ ]]; then
+   	echo "Turning on monitor mode"
+else
+   	echo "Skipping"
+	echo "Reconnect your device to USB"
+   	exit 0
+fi
+
 if [ ! -d "/sys/class/net/$1" ]; then
+	echo "WARNING: Device disconnected"
 	echo "Reconnect your device to USB"
 	echo "and execute following commands:"
 	echo "	ifconfig $1 down"
